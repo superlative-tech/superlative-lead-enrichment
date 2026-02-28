@@ -1,15 +1,15 @@
 ---
-name: superlative-data-cleaning
-description: Clean and normalize messy data using Superlative's Apify actors. Handles company names, job titles, person names, product names, places, URLs, phone numbers, plus DNS lookups, WHOIS, domain health scoring, and ICP lead scoring. Use when cleaning scraped data, normalizing CRM exports, or building data pipelines.
+name: superlative-lead-enrichment
+description: Enrich, clean, and score lead data using Superlative's 14 Apify actors. Clean company names, job titles, person names, emails, phone numbers, URLs, and places. Enrich with DNS lookups, WHOIS, and domain health scoring. Score leads against your ICP. Use when processing scraped leads, cleaning CRM exports, or building enrichment pipelines.
 license: MIT
 metadata:
   author: superlative-tech
-  version: "1.0"
+  version: "1.1"
 ---
 
-# Superlative Data Cleaning
+# Superlative Lead Enrichment
 
-Clean messy data at scale using Apify actors. All actors run on [Apify](https://apify.com) and support batch processing and instant single-item API calls.
+Clean, enrich, and score lead data at scale using Apify actors. All actors run on [Apify](https://apify.com) and support batch processing and instant single-item API calls.
 
 ## Authentication
 
@@ -120,7 +120,7 @@ All actors have automatic PPE tiered pricing:
 
 ## Pipeline Examples
 
-Actors compose into data cleaning pipelines. See [references/pipeline-examples.md](references/pipeline-examples.md) for recipes.
+Actors compose into lead enrichment pipelines. See [references/pipeline-examples.md](references/pipeline-examples.md) for recipes.
 
 Common pipeline: **Scrape** → **Clean** (Superclean actors) → **Enrich** (DNS/WHOIS/Domain Health) → **Score** (ICP Scorer)
 
