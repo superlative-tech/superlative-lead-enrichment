@@ -2,7 +2,7 @@
 
 ## Common Patterns
 
-All 7 Superclean actors share:
+All 8 Superclean actors share:
 - **Input**: `items` (string[]) or `item` (string). Objects also accepted: `[{"input": "value"}]`
 - **Base output**: `{ id, input, output, confidence }` where `id` is 1-based, `confidence` is 0-1
 - **Dual mode**: Batch (run actor with array) or Standby (instant HTTP GET for single items)
@@ -149,4 +149,33 @@ Cleans and validates phone numbers. E.164 format, type detection, country code e
   "countryCode": "US",
   "extension": null
 }
+```
+
+## Emails
+
+**Actor ID**: `superlativetech/superclean-emails`
+
+Validates and cleans email addresses. Checks syntax, fixes domain typos, detects disposable and free providers, verifies MX records. Rule-based (no LLM).
+
+**Output fields:** `id`, `input`, `output`, `isValid`, `domain`, `hasMx`, `isDisposable`, `isFreeProvider`, `suggestedFix`, `confidence`
+
+**Output example:**
+```json
+{
+  "id": 1,
+  "input": "USER@GMIAL.COM",
+  "output": "user@gmail.com",
+  "isValid": true,
+  "domain": "gmail.com",
+  "hasMx": true,
+  "isDisposable": false,
+  "isFreeProvider": true,
+  "suggestedFix": "gmial.com → gmail.com",
+  "confidence": 0.85
+}
+```
+
+**Standby example:**
+```
+GET https://superlativetech--superclean-emails.apify.actor?token=TOKEN&input=user@gmial.com
 ```

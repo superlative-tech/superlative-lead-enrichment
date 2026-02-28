@@ -26,6 +26,7 @@ All actors require an Apify API token. Set the `APIFY_TOKEN` environment variabl
 | [Places](https://apify.com/superlativetech/superclean-places) | `superlativetech/superclean-places` | Parse locations into city/state/country fields | $0.50 | Rule |
 | [URLs](https://apify.com/superlativetech/superclean-urls) | `superlativetech/superclean-urls` | Clean URLs (remove tracking params, normalize format) | $0.50 | Rule |
 | [Phone Numbers](https://apify.com/superlativetech/superclean-phone-numbers) | `superlativetech/superclean-phone-numbers` | Clean phone numbers (E.164 format, validate, detect type) | $0.50 | Rule |
+| [Emails](https://apify.com/superlativetech/superclean-emails) | `superlativetech/superclean-emails` | Validate emails (syntax, typo fix, disposable, free provider, MX check) | $0.50 | Rule |
 | [DNS Lookup](https://apify.com/superlativetech/dns-lookup) | `superlativetech/dns-lookup` | Look up DNS records (MX, SPF, DMARC, A, AAAA, etc.) | $0.10 | DNS |
 | [Domain Health](https://apify.com/superlativetech/supernet-domain-health) | `superlativetech/supernet-domain-health` | Score email domain health 0-100 (SPF, DKIM, DMARC, blacklists) | $2.50/$5.00 | DNS |
 | [WHOIS Lookup](https://apify.com/superlativetech/supernet-whois-lookup) | `superlativetech/supernet-whois-lookup` | Look up WHOIS registration data (registrar, dates, nameservers) | $0.50 | WHOIS |
@@ -81,6 +82,7 @@ curl "https://superlativetech--superclean-company-names.apify.actor?token=TOKEN&
 - Location strings → **Places** (returns city, stateOrProvince, country)
 - Messy URLs with tracking params → **URLs**
 - Phone numbers in mixed formats → **Phone Numbers** (set `defaultCountry`, `outputFormat`)
+- Email addresses to validate → **Emails** (syntax, typo fix, disposable/free detection, MX check)
 
 **Domain/email intelligence?**
 - DNS records for any domain → **DNS Lookup** (MX, SPF, DMARC, TXT, A, AAAA, NS, SOA)
@@ -129,6 +131,7 @@ All Superclean actors return: `{ id, input, output, confidence }`
 Actors with additional fields:
 - **Places**: adds `city`, `stateOrProvince`, `country`
 - **Phone Numbers**: adds `e164`, `isValid`, `type`, `countryCode`
+- **Emails**: adds `isValid`, `domain`, `hasMx`, `isDisposable`, `isFreeProvider`, `suggestedFix`
 - **URLs**: adds `domain`, `protocol`, `path`, `valid`
 - **Domain Health**: `checkId`, `domain`, `score`, `band`, `summary`, `issues[]`, `diagnostics[]`
 - **WHOIS**: `domain`, `registrar`, `createdDate`, `expiryDate`, `domainAge`, `nameServers[]`, etc.
