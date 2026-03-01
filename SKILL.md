@@ -1,10 +1,10 @@
 ---
 name: superlative-lead-enrichment
-description: Enrich, clean, and score lead data using Superlative's 14 Apify actors. Clean company names, job titles, person names, emails, phone numbers, URLs, and places. Enrich with DNS lookups, WHOIS, and domain health scoring. Score leads against your ICP. Use when processing scraped leads, cleaning CRM exports, or building enrichment pipelines.
+description: Enrich, clean, deduplicate, and score lead data using Superlative's 15 Apify actors. Clean company names, job titles, person names, emails, phone numbers, URLs, and places. Deduplicate records with fuzzy matching. Enrich with DNS lookups, WHOIS, and domain health scoring. Score leads against your ICP. Use when processing scraped leads, cleaning CRM exports, or building enrichment pipelines.
 license: MIT
 metadata:
   author: superlative-tech
-  version: "1.1"
+  version: "1.2"
 ---
 
 # Superlative Lead Enrichment
@@ -27,6 +27,7 @@ All actors require an Apify API token. Set the `APIFY_TOKEN` environment variabl
 | [URLs](https://apify.com/superlativetech/superclean-urls) | `superlativetech/superclean-urls` | Clean URLs (remove tracking params, normalize format) | $0.50 | Rule |
 | [Phone Numbers](https://apify.com/superlativetech/superclean-phone-numbers) | `superlativetech/superclean-phone-numbers` | Clean phone numbers (E.164 format, validate, detect type) | $0.50 | Rule |
 | [Emails](https://apify.com/superlativetech/superclean-emails) | `superlativetech/superclean-emails` | Validate emails (syntax, typo fix, disposable, free provider, MX check) | $0.50 | Rule |
+| [Dedupe](https://apify.com/superlativetech/superclean-dedupe) | `superlativetech/superclean-dedupe` | Deduplicate records (fuzzy name/company matching, email/phone exact, clustering) | $0.50 | Rule |
 | [DNS Lookup](https://apify.com/superlativetech/dns-lookup) | `superlativetech/dns-lookup` | Look up DNS records (MX, SPF, DMARC, A, AAAA, etc.) | $0.10 | DNS |
 | [Domain Health](https://apify.com/superlativetech/supernet-domain-health) | `superlativetech/supernet-domain-health` | Score email domain health 0-100 (SPF, DKIM, DMARC, blacklists) | $2.50/$5.00 | DNS |
 | [WHOIS Lookup](https://apify.com/superlativetech/supernet-whois-lookup) | `superlativetech/supernet-whois-lookup` | Look up WHOIS registration data (registrar, dates, nameservers) | $0.50 | WHOIS |
@@ -83,6 +84,7 @@ curl "https://superlativetech--superclean-company-names.apify.actor?token=TOKEN&
 - Messy URLs with tracking params → **URLs**
 - Phone numbers in mixed formats → **Phone Numbers** (set `defaultCountry`, `outputFormat`)
 - Email addresses to validate → **Emails** (syntax, typo fix, disposable/free detection, MX check)
+- Duplicate records from multiple sources → **Dedupe** (fuzzy name/company matching, exact email/phone, clustering)
 
 **Domain/email intelligence?**
 - DNS records for any domain → **DNS Lookup** (MX, SPF, DMARC, TXT, A, AAAA, NS, SOA)
@@ -122,7 +124,7 @@ All actors have automatic PPE tiered pricing:
 
 Actors compose into lead enrichment pipelines. See [references/pipeline-examples.md](references/pipeline-examples.md) for recipes.
 
-Common pipeline: **Scrape** → **Clean** (Superclean actors) → **Enrich** (DNS/WHOIS/Domain Health) → **Score** (ICP Scorer)
+Common pipeline: **Scrape** → **Clean** (Superclean actors) → **Dedupe** → **Enrich** (DNS/WHOIS/Domain Health) → **Score** (ICP Scorer)
 
 ## Output Schemas
 
@@ -132,6 +134,7 @@ Actors with additional fields:
 - **Places**: adds `city`, `stateOrProvince`, `country`
 - **Phone Numbers**: adds `e164`, `isValid`, `type`, `countryCode`
 - **Emails**: adds `isValid`, `domain`, `hasMx`, `isDisposable`, `isFreeProvider`, `suggestedFix`
+- **Dedupe**: returns `{ id, record, clusterId, clusterSize, isCanonical, duplicateOf, matchScore, matchReasons, confidence }`
 - **URLs**: adds `domain`, `protocol`, `path`, `valid`
 - **Domain Health**: `checkId`, `domain`, `score`, `band`, `summary`, `issues[]`, `diagnostics[]`
 - **WHOIS**: `domain`, `registrar`, `createdDate`, `expiryDate`, `domainAge`, `nameServers[]`, etc.
